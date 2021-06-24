@@ -1,12 +1,13 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 
+import { join } from 'path'
 import { instrument } from './instrument'
 
 const apikey: string = core.getInput('apikey', { required: true })
 const project_id: string = core.getInput('project_id')
 const command: string = core.getInput('command')
-const instrumenter_version: string = core.getInput('instrumenter_version')
+const plugin_version: string = core.getInput('plugin_version')
 // const agent_version: string = core.getInput('agent_version')
 
 // Setting environment variables programmatically
@@ -19,12 +20,12 @@ async function run(): Promise<void> {
 
         core.startGroup('[Thundra] Instrumentation')
         core.info(`> Instrumenting the application`)
-        await instrument(instrumenter_version)
+        await instrument(plugin_version)
         core.endGroup()
 
         if (command) {
             core.info(`[Thundra] Executing the command`)
-            await exec.exec(`sh -c "${command}"`)
+            await exec.exec(`sh -c "${command}" --init-script ${join(__dirname, './thundra.gradle')}`)
         }
     } catch (error) {
         core.setFailed(error.message)

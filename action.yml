@@ -11,9 +11,9 @@ inputs:
   command:
     required: false
     description: "Command to run your tests"
-  instrumenter_version:
+  plugin_version:
     required: false
-    description: "Use a specific version of the Grdale instrumentation script"
+    description: "Use a specific version of the Thundra Gradle Plugin"
   agent_version:
     required: false
     description: "Use a specific version of the Thundra Agent"
@@ -22,4 +22,4 @@ runs:
   main: "dist/index.js"
 branding:
   icon: "cloud-lightning"
-  color: "yellow"
+  color: "purple"
