@@ -1,0 +1,21 @@
+initscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'io.thundra.agent:thundra-gradle-test-plugin:<%= thundra.gradlePluginVersion %>'
+    }
+}
+
+allprojects {
+    apply plugin: io.thundra.agent.gradle.ThundraTestPlugin
+
+    repositories {
+        mavenCentral()
+    }
+
+    scope {
+        agentPath = "<%= thundra.agentPath %>"
+    }
+}
