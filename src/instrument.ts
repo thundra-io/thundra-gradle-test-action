@@ -32,9 +32,24 @@ export async function instrument(plugin_version?: string): Promise<void> {
             agentPath
         }
     }
-    ejs.renderFile(templatePath, ejsData, (_, result) => {
-        writeFileSync(initFilePath, result, 'utf-8')
+    ejs.renderFile(templatePath, ejsData, (error, result) => {
+        if (error) {
+            core.warning(`> EJS couldn't render the template file at ${templatePath} with ${JSON.stringify(ejsData)}`)
+            core.warning(`> Caught the error: ${error}`)
+            core.warning('> Instrumentation failed!')
+            return
+        }
+
+        try {
+            writeFileSync(initFilePath, result, 'utf-8')
+        } catch (err) {
+            core.warning(`> Couldn't write rendered EJS template to a file`)
+            core.warning(`> Caught the error: ${err}`)
+            core.warning('> Instrumentation failed!')
+            return
+        }
     })
+    core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath)
     core.info(`> Successfully generated init file at ${initFilePath}`)
 
     resolve('Instrumentation is completed.')
