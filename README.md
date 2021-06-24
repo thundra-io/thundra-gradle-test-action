@@ -10,8 +10,6 @@ You can learn more about Thundra at [thundra.io](https://thundra.io)
 
 Once you get the Thundra API Key, make sure to set it as a secret. A sample Github Action workflow would look like this:
 
-### Usage
-
 ```yaml
 # ...
 
