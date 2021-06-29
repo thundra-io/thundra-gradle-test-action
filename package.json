@@ -11,7 +11,7 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest --passWithNoTests",
-    "cp-template": "cpx ./templates/**/* ./dist/templates --clean",
+    "cp-template": "cpx ./templates/**/* ./dist/templates --clean && cpx ./templates/**/* ./lib/templates --clean",
     "all": "npm install && npm run build && npm run format && npm run lint && npm run package && npm run cp-template && npm test"
   },
   "repository": {
