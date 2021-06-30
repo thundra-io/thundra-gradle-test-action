@@ -25,7 +25,7 @@ async function run(): Promise<void> {
 
         if (command) {
             core.info(`[Thundra] Executing the command`)
-            await exec.exec(`sh -c "${command}" --init-script ${join(__dirname, './thundra.gradle')}`)
+            await exec.exec(`sh -c "${command} --init-script ${join(__dirname, './thundra.gradle')}"`)
         }
     } catch (error) {
         core.setFailed(error.message)

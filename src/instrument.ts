@@ -24,8 +24,8 @@ export async function instrument(plugin_version?: string): Promise<void> {
     core.info(`> Successfully downloaded the agent to ${agentPath}`)
 
     core.info('> Generating init file...')
-    const templatePath = join(__dirname, './templates/thundra.gradle.ejs')
-    const initFilePath = join(__dirname, './thundra.gradle')
+    const templatePath = join(__dirname, 'templates/thundra.gradle.ejs')
+    const initFilePath = join(__dirname, 'thundra.gradle')
     const ejsData = {
         thundra: {
             gradlePluginVersion,

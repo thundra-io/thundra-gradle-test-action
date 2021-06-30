@@ -57,8 +57,8 @@ function instrument(plugin_version) {
         const agentPath = yield tc.downloadTool(THUNDRA_AGENT_REPOSITORY);
         core.info(`> Successfully downloaded the agent to ${agentPath}`);
         core.info('> Generating init file...');
-        const templatePath = path_1.join(__dirname, './templates/thundra.gradle.ejs');
-        const initFilePath = path_1.join(__dirname, './thundra.gradle');
+        const templatePath = path_1.join(__dirname, 'templates/thundra.gradle.ejs');
+        const initFilePath = path_1.join(__dirname, 'thundra.gradle');
         const ejsData = {
             thundra: {
                 gradlePluginVersion,
@@ -148,7 +148,7 @@ function run() {
             core.endGroup();
             if (command) {
                 core.info(`[Thundra] Executing the command`);
-                yield exec.exec(`sh -c "${command}" --init-script ${path_1.join(__dirname, './thundra.gradle')}`);
+                yield exec.exec(`sh -c "${command} --init-script ${path_1.join(__dirname, './thundra.gradle')}"`);
             }
         }
         catch (error) {
