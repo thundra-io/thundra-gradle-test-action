@@ -63,7 +63,7 @@ function instrument(plugin_version, agent_version) {
         const agentPath = yield tc.downloadTool(`https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/${thundraAgentVersion}/thundra-agent-bootstrap-${thundraAgentVersion}.jar`);
         core.info(`> Successfully downloaded the agent to ${agentPath}`);
         core.info('> Generating init file...');
-        const templatePath = path_1.join(__dirname, 'templates/thundra.gradle.ejs');
+        const templatePath = __webpack_require__.ab + "thundra.gradle.ejs";
         const initFilePath = path_1.join(__dirname, 'thundra.gradle');
         const ejsData = {
             thundra: {
@@ -71,7 +71,7 @@ function instrument(plugin_version, agent_version) {
                 agentPath
             }
         };
-        ejs.renderFile(templatePath, ejsData, (error, result) => {
+        ejs.renderFile(__webpack_require__.ab + "thundra.gradle.ejs", ejsData, (error, result) => {
             if (error) {
                 core.warning(`> EJS couldn't render the template file at ${templatePath} with ${JSON.stringify(ejsData)}`);
                 core.warning(`> Caught the error: ${error}`);

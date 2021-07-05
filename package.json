@@ -9,10 +9,10 @@
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --no-cache --license licenses.txt",
+    "package": "ncc build --source-map --license licenses.txt",
     "test": "jest --passWithNoTests",
-    "cp-template": "cpx ./templates/**/* ./dist/templates --clean && cpx ./templates/**/* ./lib/templates --clean",
-    "all": "npm install && npm run build && npm run format && npm run lint && npm run package && npm run cp-template && npm test"
+    "cp-template": "cpx ./templates/**/* ./lib/templates --clean",
+    "all": "npm install && npm run build && npm run cp-template && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {
     "type": "git",
