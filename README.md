@@ -4,7 +4,7 @@ A GitHub Action to instrument your Gradle with Thundra Agent.
 
 ## Usage
 
-Information about available parameters is listed [below](#parameters). The only required parameter is the Thundra API Key, which can be obtained from [here]().
+Information about available parameters is listed [below](#parameters). The required parameters are the Thundra API Key and the Thundra Project ID, which can be obtained from [here]().
 
 You can learn more about Thundra at [thundra.io](https://thundra.io)
 
@@ -23,6 +23,7 @@ steps:
     uses: thundra-io/thundra-gradle-test-action@v1
     with:
       apikey: ${{ secrets.THUNDRA_APIKEY }}
+      project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
       command: ./gradlew build
 ```
 
@@ -43,6 +44,7 @@ steps:
     uses: thundra-io/thundra-gradle-test-action@v1
     with:
       apikey: ${{ secrets.THUNDRA_APIKEY }}
+      project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
   - name: Run Gradle command
     run: ./gradlew build --init-script ./thundra.gradle
 ```
@@ -52,7 +54,7 @@ steps:
 | Name                  | Requirement       | Description
 | ---                   | ---               | ---
 | apikey                | Required          | Thundra API Key
+| project_id            | Required          | Your project id from Thundra. Will be used to filter and classify your testruns.
 | command               | Optional          | The Gradle command you want to run. The given command will be executed with the instrumentation init script. However, if it's not present, the action will end once the instrumentation init script is generated. This is optional in case you want to do more before you actually run your tests. See the [Manual Usage](#manual-usage) for more.
-| project_id            | Optional          | Your project id from Thundra. Will be used to filter and classify your testruns.
 | plugin_version        | Optional          | In the action itself, we use a Gradle plugin to run your tests. This plugin is released and versioned separately from the action. Hence, if there is some breaking change or specific version you want to use, you can use it by defining this parameter. You can see all the available version of our plugin [here](https://search.maven.org/artifact/io.thundra.agent/thundra-agent-gradle-test-instrumentation).
 | agent_version         | Optional          | A specific version Thundra Java Agent you want to use should be defined here. Similar to `plugin_version` parameter. You can see all the available version of our agent [here](https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/maven-metadata.xml).

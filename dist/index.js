@@ -138,15 +138,13 @@ const semver = __importStar(__webpack_require__(5911));
 const path_1 = __webpack_require__(5622);
 const instrument_1 = __webpack_require__(2148);
 const apikey = core.getInput('apikey', { required: true });
-const project_id = core.getInput('project_id');
+const project_id = core.getInput('project_id', { required: true });
 const command = core.getInput('command');
 const plugin_version = core.getInput('plugin_version');
 const agent_version = core.getInput('agent_version');
 // Setting environment variables programmatically
 core.exportVariable('THUNDRA_APIKEY', apikey);
-if (project_id) {
-    core.exportVariable('THUNDRA_AGENT_TEST_PROJECT_ID', project_id);
-}
+core.exportVariable('THUNDRA_AGENT_TEST_PROJECT_ID', project_id);
 if (agent_version && semver.lt(agent_version, '2.7.0')) {
     core.setFailed(`Thundra Java Agent prior to 2.7.0 doesn't work with this action`);
 }

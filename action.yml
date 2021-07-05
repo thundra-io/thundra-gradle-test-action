@@ -6,7 +6,7 @@ inputs:
     required: true
     description: "Thundra's API Key"
   project_id:
-    required: false
+    required: true
     description: "Thundra's Test Project ID"
   command:
     required: false
