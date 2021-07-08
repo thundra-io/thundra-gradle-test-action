@@ -29,7 +29,7 @@ steps:
 
 ### Manual Usage
 
-If you plan to run your tests manually, you must give the `./thundra.gradle` file as the init script to your command. The path of this file is also exported to the `THUNDRA_GRADLE_INIT_SCRIPT_PATH` environment variable in the action, so you can use it that way too.
+If you plan to run your tests manually, you must give the `thundra.gradle` file as the init script to your command. The path of this file is exported to the `THUNDRA_GRADLE_INIT_SCRIPT_PATH` environment variable in the action.
 
 ```yaml
 # ...
@@ -46,7 +46,7 @@ steps:
       apikey: ${{ secrets.THUNDRA_APIKEY }}
       project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
   - name: Run Gradle command
-    run: ./gradlew build --init-script ./thundra.gradle
+    run: ./gradlew build --init-script $THUNDRA_GRADLE_INIT_SCRIPT_PATH
 ```
 
 ## Parameters
