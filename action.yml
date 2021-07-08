@@ -1,0 +1,25 @@
+name: "Thundra Gradle Test Instrumentation"
+description: "Thundra Gradle Test Instrumentation"
+author: "Tolga Takir <tolga@thundra.io>"
+inputs:
+  apikey:
+    required: true
+    description: "Thundra's API Key"
+  project_id:
+    required: true
+    description: "Thundra's Test Project ID"
+  command:
+    required: false
+    description: "Command to run your tests"
+  plugin_version:
+    required: false
+    description: "Use a specific version of the Thundra Gradle Plugin"
+  agent_version:
+    required: false
+    description: "Use a specific version of the Thundra Agent"
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: "cloud-lightning"
+  color: "purple"
