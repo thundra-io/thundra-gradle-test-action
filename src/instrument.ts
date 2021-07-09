@@ -12,6 +12,8 @@ const GRADLE_TEST_PLUGIN =
     'https://repo1.maven.org/maven2/io/thundra/agent/thundra-gradle-test-plugin/maven-metadata.xml'
 
 export async function instrument(plugin_version?: string, agent_version?: string): Promise<void> {
+    let agentPath: string
+
     const gradlePluginVersion: string | undefined = await getVersion(GRADLE_TEST_PLUGIN, plugin_version)
     if (!gradlePluginVersion) {
         core.warning("> Couldn't find an available version for Thundra Gradle Test Plugin")
@@ -26,11 +28,16 @@ export async function instrument(plugin_version?: string, agent_version?: string
         return
     }
 
-    core.info('> Downloading the agent...')
-    const agentPath = await tc.downloadTool(
-        `https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/${thundraAgentVersion}/thundra-agent-bootstrap-${thundraAgentVersion}.jar`
-    )
-    core.info(`> Successfully downloaded the agent to ${agentPath}`)
+    if (process.env.LOCAL_AGENT_PATH) {
+        agentPath = process.env.LOCAL_AGENT_PATH
+        core.info(`> Using the local agent at ${agentPath}`)
+    } else {
+        core.info('> Downloading the agent...')
+        agentPath = await tc.downloadTool(
+            `https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/${thundraAgentVersion}/thundra-agent-bootstrap-${thundraAgentVersion}.jar`
+        )
+        core.info(`> Successfully downloaded the agent to ${agentPath}`)
+    }
 
     core.info('> Generating init file...')
     const templatePath = join(__dirname, 'templates/thundra.gradle.ejs')

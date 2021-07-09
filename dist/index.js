@@ -47,6 +47,7 @@ const THUNDRA_AGENT_METADATA = 'https://repo.thundra.io/service/local/repositori
 const GRADLE_TEST_PLUGIN = 'https://repo1.maven.org/maven2/io/thundra/agent/thundra-gradle-test-plugin/maven-metadata.xml';
 function instrument(plugin_version, agent_version) {
     return __awaiter(this, void 0, void 0, function* () {
+        let agentPath;
         const gradlePluginVersion = yield version_1.getVersion(GRADLE_TEST_PLUGIN, plugin_version);
         if (!gradlePluginVersion) {
             core.warning("> Couldn't find an available version for Thundra Gradle Test Plugin");
@@ -59,9 +60,15 @@ function instrument(plugin_version, agent_version) {
             core.warning('> Instrumentation failed!');
             return;
         }
-        core.info('> Downloading the agent...');
-        const agentPath = yield tc.downloadTool(`https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/${thundraAgentVersion}/thundra-agent-bootstrap-${thundraAgentVersion}.jar`);
-        core.info(`> Successfully downloaded the agent to ${agentPath}`);
+        if (process.env.LOCAL_AGENT_PATH) {
+            agentPath = process.env.LOCAL_AGENT_PATH;
+            core.info(`> Using the local agent at ${agentPath}`);
+        }
+        else {
+            core.info('> Downloading the agent...');
+            agentPath = yield tc.downloadTool(`https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/${thundraAgentVersion}/thundra-agent-bootstrap-${thundraAgentVersion}.jar`);
+            core.info(`> Successfully downloaded the agent to ${agentPath}`);
+        }
         core.info('> Generating init file...');
         const templatePath = __webpack_require__.ab + "thundra.gradle.ejs";
         const initFilePath = path_1.join(__dirname, 'thundra.gradle');
