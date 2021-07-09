@@ -4,7 +4,7 @@ A GitHub Action to instrument your Gradle with Thundra Agent.
 
 ## Usage
 
-Information about available parameters is listed [below](#parameters). The required parameters are the Thundra API Key and the Thundra Project ID, which can be obtained from [here]().
+Information about available parameters is listed [below](#parameters). The required parameters are the Thundra API Key and the Thundra Project ID, which can be obtained from [foresight.thundra.io](https://foresight.thundra.io/).
 
 You can learn more about Thundra at [thundra.io](https://thundra.io)
 
