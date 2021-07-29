@@ -5,11 +5,25 @@ import * as semver from 'semver'
 import { join } from 'path'
 import { instrument } from './instrument'
 
-const apikey: string = core.getInput('apikey', { required: true })
-const project_id: string = core.getInput('project_id', { required: true })
+const apikey: string = core.getInput('apikey')
+const project_id: string = core.getInput('project_id')
 const command: string = core.getInput('command')
 const plugin_version: string = core.getInput('plugin_version')
 const agent_version: string = core.getInput('agent_version')
+
+if (!apikey) {
+    core.error('Thundra API Key is not present. Exiting early...')
+    core.error('Instrumentation failed.')
+
+    process.exit(core.ExitCode.Success)
+}
+
+if (!project_id) {
+    core.error('Thundra Project ID is not present. Exiting early...')
+    core.error('Instrumentation failed.')
+
+    process.exit(core.ExitCode.Success)
+}
 
 // Setting environment variables programmatically
 core.exportVariable('THUNDRA_APIKEY', apikey)
