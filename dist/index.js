@@ -144,11 +144,21 @@ const exec = __importStar(__webpack_require__(1514));
 const semver = __importStar(__webpack_require__(5911));
 const path_1 = __webpack_require__(5622);
 const instrument_1 = __webpack_require__(2148);
-const apikey = core.getInput('apikey', { required: true });
-const project_id = core.getInput('project_id', { required: true });
+const apikey = core.getInput('apikey');
+const project_id = core.getInput('project_id');
 const command = core.getInput('command');
 const plugin_version = core.getInput('plugin_version');
 const agent_version = core.getInput('agent_version');
+if (!apikey) {
+    core.error('Thundra API Key is not present. Exiting early...');
+    core.error('Instrumentation failed.');
+    process.exit(core.ExitCode.Success);
+}
+if (!project_id) {
+    core.error('Thundra Project ID is not present. Exiting early...');
+    core.error('Instrumentation failed.');
+    process.exit(core.ExitCode.Success);
+}
 // Setting environment variables programmatically
 core.exportVariable('THUNDRA_APIKEY', apikey);
 core.exportVariable('THUNDRA_AGENT_TEST_PROJECT_ID', project_id);
