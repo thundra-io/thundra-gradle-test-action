@@ -58,6 +58,9 @@ export async function instrument(plugin_version?: string, agent_version?: string
 
         try {
             writeFileSync(initFilePath, result, 'utf-8')
+
+            core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath)
+            core.info(`> Successfully generated init file at ${initFilePath}`)
         } catch (err) {
             core.warning(`> Couldn't write rendered EJS template to a file`)
             core.warning(`> Caught the error: ${err}`)
@@ -65,8 +68,6 @@ export async function instrument(plugin_version?: string, agent_version?: string
             return
         }
     })
-    core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath)
-    core.info(`> Successfully generated init file at ${initFilePath}`)
 
     resolve('Instrumentation is completed.')
 }

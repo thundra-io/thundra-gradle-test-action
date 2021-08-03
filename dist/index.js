@@ -87,6 +87,8 @@ function instrument(plugin_version, agent_version) {
             }
             try {
                 graceful_fs_1.writeFileSync(initFilePath, result, 'utf-8');
+                core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath);
+                core.info(`> Successfully generated init file at ${initFilePath}`);
             }
             catch (err) {
                 core.warning(`> Couldn't write rendered EJS template to a file`);
@@ -95,8 +97,6 @@ function instrument(plugin_version, agent_version) {
                 return;
             }
         });
-        core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath);
-        core.info(`> Successfully generated init file at ${initFilePath}`);
         path_1.resolve('Instrumentation is completed.');
     });
 }
@@ -142,7 +142,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const exec = __importStar(__webpack_require__(1514));
 const semver = __importStar(__webpack_require__(5911));
-const path_1 = __webpack_require__(5622);
 const instrument_1 = __webpack_require__(2148);
 const apikey = core.getInput('apikey');
 const project_id = core.getInput('project_id');
@@ -175,7 +174,14 @@ function run() {
             core.endGroup();
             if (command) {
                 core.info(`[Thundra] Executing the command`);
-                yield exec.exec(`sh -c "${command} --init-script ${path_1.join(__dirname, './thundra.gradle')}"`);
+                if (process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH) {
+                    yield exec.exec(`sh -c "${command} --init-script ${process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH}"`);
+                }
+                else {
+                    core.info('> Init script generation failed');
+                    core.info('> Instrumentation skipped');
+                    yield exec.exec(`sh -c "${command}"`);
+                }
             }
         }
         catch (error) {

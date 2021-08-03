@@ -2,7 +2,6 @@ import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as semver from 'semver'
 
-import { join } from 'path'
 import { instrument } from './instrument'
 
 const apikey: string = core.getInput('apikey')
@@ -44,7 +43,15 @@ async function run(): Promise<void> {
 
         if (command) {
             core.info(`[Thundra] Executing the command`)
-            await exec.exec(`sh -c "${command} --init-script ${join(__dirname, './thundra.gradle')}"`)
+
+            if (process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH) {
+                await exec.exec(`sh -c "${command} --init-script ${process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH}"`)
+            } else {
+                core.info('> Init script generation failed')
+                core.info('> Instrumentation skipped')
+
+                await exec.exec(`sh -c "${command}"`)
+            }
         }
     } catch (error) {
         core.setFailed(error.message)
