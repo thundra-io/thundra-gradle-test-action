@@ -142,7 +142,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const exec = __importStar(__webpack_require__(1514));
 const semver = __importStar(__webpack_require__(5911));
-const path_1 = __webpack_require__(5622);
 const instrument_1 = __webpack_require__(2148);
 const apikey = core.getInput('apikey');
 const project_id = core.getInput('project_id');
@@ -176,7 +175,7 @@ function run() {
             if (command) {
                 core.info(`[Thundra] Executing the command`);
                 if (process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH) {
-                    yield exec.exec(`sh -c "${command} --init-script ${path_1.join(__dirname, './thundra.gradle')}"`);
+                    yield exec.exec(`sh -c "${command} --init-script ${process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH}"`);
                 }
                 else {
                     core.info('> Init script generation failed');
