@@ -87,6 +87,8 @@ function instrument(plugin_version, agent_version) {
             }
             try {
                 graceful_fs_1.writeFileSync(initFilePath, result, 'utf-8');
+                core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath);
+                core.info(`> Successfully generated init file at ${initFilePath}`);
             }
             catch (err) {
                 core.warning(`> Couldn't write rendered EJS template to a file`);
@@ -95,8 +97,6 @@ function instrument(plugin_version, agent_version) {
                 return;
             }
         });
-        core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath);
-        core.info(`> Successfully generated init file at ${initFilePath}`);
         path_1.resolve('Instrumentation is completed.');
     });
 }
