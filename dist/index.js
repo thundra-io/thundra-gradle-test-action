@@ -175,7 +175,14 @@ function run() {
             core.endGroup();
             if (command) {
                 core.info(`[Thundra] Executing the command`);
-                yield exec.exec(`sh -c "${command} --init-script ${path_1.join(__dirname, './thundra.gradle')}"`);
+                if (process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH) {
+                    yield exec.exec(`sh -c "${command} --init-script ${path_1.join(__dirname, './thundra.gradle')}"`);
+                }
+                else {
+                    core.info('> Init script generation failed');
+                    core.info('> Instrumentation skipped');
+                    yield exec.exec(`sh -c "${command}"`);
+                }
             }
         }
         catch (error) {
