@@ -4,7 +4,9 @@ A GitHub Action to instrument your Gradle with Thundra Agent.
 
 ## Usage
 
-Information about available parameters is listed [below](#parameters). The required parameters are the Thundra API Key and the Thundra Project ID, which can be obtained from [foresight.thundra.io](https://foresight.thundra.io/).
+Information about available parameters is listed [below](#parameters). **Make sure to check out the [Known Issues](#known-issues)**.
+
+The required parameters are the Thundra API Key and the Thundra Project ID, which can be obtained from [foresight.thundra.io](https://foresight.thundra.io/).
 
 You can learn more about Thundra at [thundra.io](https://thundra.io)
 
@@ -48,6 +50,18 @@ steps:
   - name: Run Gradle command
     run: ./gradlew build --init-script $THUNDRA_GRADLE_INIT_SCRIPT_PATH
 ```
+
+## Known Issues
+
+### Using It with Build Matrix
+
+If you are using a build matrix in your workflow, each run in your build matrix will show up like it's a different testrun on Thundra Foresight where in fact they belong to the same build.
+
+With the current GitHub Action context, it's not possible to understand that those runs belogs to the same run. So, the obvious solution is to set a unique testrun ID for these runs before the matrix starts.
+
+To solve this problem and other issues if we need to, we've written the [Thundra Test Init Action](https://github.com/thundra-io/thundra-test-init-action).
+
+Make sure to follow the instruction in the repository.
 
 ## Parameters
 
