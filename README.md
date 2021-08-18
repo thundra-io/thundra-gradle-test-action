@@ -15,40 +15,48 @@ Once you get the Thundra API Key, make sure to set it as a secret. A sample Gith
 ```yaml
 # ...
 
-steps:
-  - uses: actions/checkout@v2
-  - name: Set up JDK 1.8
-    uses: actions/setup-java@v1
-    with:
-      java-version: 1.8
-  - name: Thundra Gradle Test Instrumentation
-    uses: thundra-io/thundra-gradle-test-action@v1
-    with:
-      apikey: ${{ secrets.THUNDRA_APIKEY }}
-      project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
-      command: ./gradlew build
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+      - name: Thundra Gradle Test Instrumentation
+        uses: thundra-io/thundra-gradle-test-action@v1
+        with:
+          apikey: ${{ secrets.THUNDRA_APIKEY }}
+          project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
+          command: ./gradlew build
 ```
 
-### Manual Usage
+### Running the Command Separately
 
 If you plan to run your tests manually, you must give the `thundra.gradle` file as the init script to your command. The path of this file is exported to the `THUNDRA_GRADLE_INIT_SCRIPT_PATH` environment variable in the action.
 
 ```yaml
 # ...
 
-steps:
-  - uses: actions/checkout@v2
-  - name: Set up JDK 1.8
-    uses: actions/setup-java@v1
-    with:
-      java-version: 1.8
-  - name: Thundra Gradle Test Instrumentation
-    uses: thundra-io/thundra-gradle-test-action@v1
-    with:
-      apikey: ${{ secrets.THUNDRA_APIKEY }}
-      project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
-  - name: Run Gradle command
-    run: ./gradlew build --init-script $THUNDRA_GRADLE_INIT_SCRIPT_PATH
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+      - name: Thundra Gradle Test Instrumentation
+        uses: thundra-io/thundra-gradle-test-action@v1
+        with:
+          apikey: ${{ secrets.THUNDRA_APIKEY }}
+          project_id: ${{ secrets.THUNDRA_PROJECT_ID }}
+      - name: Run Gradle command
+        run: ./gradlew build --init-script $THUNDRA_GRADLE_INIT_SCRIPT_PATH
 ```
 
 ## Known Issues
