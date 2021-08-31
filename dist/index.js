@@ -44,7 +44,7 @@ const graceful_fs_1 = __webpack_require__(7758);
 const path_1 = __webpack_require__(5622);
 const version_1 = __webpack_require__(8217);
 const THUNDRA_AGENT_METADATA = 'https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/maven-metadata.xml';
-const GRADLE_TEST_PLUGIN = 'https://repo1.maven.org/maven2/io/thundra/agent/thundra-gradle-test-plugin/maven-metadata.xml';
+const GRADLE_TEST_PLUGIN = 'https://repo1.maven.org/maven2/io/thundra/plugin/thundra-gradle-test-plugin/maven-metadata.xml';
 function instrument(plugin_version, agent_version) {
     return __awaiter(this, void 0, void 0, function* () {
         let agentPath;
