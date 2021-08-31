@@ -9,7 +9,7 @@ const THUNDRA_AGENT_METADATA =
     'https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/maven-metadata.xml'
 
 const GRADLE_TEST_PLUGIN =
-    'https://repo1.maven.org/maven2/io/thundra/agent/thundra-gradle-test-plugin/maven-metadata.xml'
+    'https://repo1.maven.org/maven2/io/thundra/plugin/thundra-gradle-test-plugin/maven-metadata.xml'
 
 export async function instrument(plugin_version?: string, agent_version?: string): Promise<void> {
     let agentPath: string
