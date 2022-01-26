@@ -59,13 +59,17 @@ export async function instrument(plugin_version?: string, agent_version?: string
 
         try {
             writeFileSync(initFilePath, result, 'utf-8')
-            const initDFolder = process.env.GRADLE_HOME + '/init.d/';
-            const gradleHomePath = join(initDFolder, 'thundra.gradle');
-            writeFileSync(gradleHomePath, result, 'utf-8')
-            await exec.exec(`sh -c "ls -la ${initDFolder}"`)
+            if (process.env.GRADLE_HOME) {
+                const gradleHome: string = process.env.GRADLE_HOME.toString()
+                const initDFolder = `${gradleHome}/init.d/`
+                const gradleHomePath = join(initDFolder, 'thundra.gradle')
+                writeFileSync(gradleHomePath, result, 'utf-8')
+                core.info(`> Successfully generated init file at ${gradleHomePath}`)
+
+            }
+
             core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath)
             core.info(`> Successfully generated init file at ${initFilePath}`)
-            core.info(`> Successfully generated init file 2 at ${gradleHomePath}`)
         } catch (err) {
             core.warning(`> Couldn't write rendered EJS template to a file`)
             core.warning(`> Caught the error: ${err}`)

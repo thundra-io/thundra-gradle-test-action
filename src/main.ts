@@ -40,7 +40,11 @@ async function run(): Promise<void> {
         core.info(`> Instrumenting the application`)
         await instrument(plugin_version, agent_version)
         core.endGroup()
-
+        if (process.env.GRADLE_HOME) {
+            const gradleHome: string = process.env.GRADLE_HOME.toString()
+            const initDFolder = `${gradleHome}/init.d/`
+            await exec.exec(`sh -c "ls -la ${initDFolder}"`)
+        }
         if (command) {
             core.info(`[Thundra] Executing the command`)
 

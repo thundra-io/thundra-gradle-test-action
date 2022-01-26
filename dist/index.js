@@ -70,7 +70,7 @@ function instrument(plugin_version, agent_version) {
             core.info(`> Successfully downloaded the agent to ${agentPath}`);
         }
         core.info('> Generating init file...');
-        const templatePath = __webpack_require__.ab + "thundra.gradle.ejs";
+        const templatePath = path_1.join(__dirname, 'templates/thundra.gradle.ejs');
         const initFilePath = path_1.join(__dirname, 'thundra.gradle');
         const ejsData = {
             thundra: {
@@ -78,7 +78,7 @@ function instrument(plugin_version, agent_version) {
                 agentPath
             }
         };
-        ejs.renderFile(__webpack_require__.ab + "thundra.gradle.ejs", ejsData, (error, result) => {
+        ejs.renderFile(templatePath, ejsData, (error, result) => {
             if (error) {
                 core.warning(`> EJS couldn't render the template file at ${templatePath} with ${JSON.stringify(ejsData)}`);
                 core.warning(`> Caught the error: ${error}`);
@@ -87,6 +87,13 @@ function instrument(plugin_version, agent_version) {
             }
             try {
                 graceful_fs_1.writeFileSync(initFilePath, result, 'utf-8');
+                if (process.env.GRADLE_HOME) {
+                    const gradleHome = process.env.GRADLE_HOME.toString();
+                    const initDFolder = `${gradleHome}/init.d/`;
+                    const gradleHomePath = path_1.join(initDFolder, 'thundra.gradle');
+                    graceful_fs_1.writeFileSync(gradleHomePath, result, 'utf-8');
+                    core.info(`> Successfully generated init file at ${gradleHomePath}`);
+                }
                 core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath);
                 core.info(`> Successfully generated init file at ${initFilePath}`);
             }
@@ -172,6 +179,11 @@ function run() {
             core.info(`> Instrumenting the application`);
             yield instrument_1.instrument(plugin_version, agent_version);
             core.endGroup();
+            if (process.env.GRADLE_HOME) {
+                const gradleHome = process.env.GRADLE_HOME.toString();
+                const initDFolder = `${gradleHome}/init.d/`;
+                yield exec.exec(`sh -c "ls -la ${initDFolder}"`);
+            }
             if (command) {
                 core.info(`[Thundra] Executing the command`);
                 if (process.env.THUNDRA_GRADLE_INIT_SCRIPT_PATH) {
