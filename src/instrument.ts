@@ -4,6 +4,7 @@ import * as ejs from 'ejs'
 import { writeFileSync } from 'graceful-fs'
 import { resolve, join } from 'path'
 import { getVersion } from './version'
+import * as exec from '@actions/exec'
 
 const THUNDRA_AGENT_METADATA =
     'https://repo.thundra.io/service/local/repositories/thundra-releases/content/io/thundra/agent/thundra-agent-bootstrap/maven-metadata.xml'
@@ -58,7 +59,10 @@ export async function instrument(plugin_version?: string, agent_version?: string
 
         try {
             writeFileSync(initFilePath, result, 'utf-8')
-
+            const initDFolder = process.env.GRADLE_HOME + '/init.d/';
+            const gradleHomePath = join(initDFolder, 'thundra.gradle');
+            writeFileSync(gradleHomePath, result, 'utf-8')
+            await exec.exec(`sh -c "ls -la ${initDFolder}"`)
             core.exportVariable('THUNDRA_GRADLE_INIT_SCRIPT_PATH', initFilePath)
             core.info(`> Successfully generated init file at ${initFilePath}`)
         } catch (err) {
